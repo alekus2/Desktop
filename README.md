@@ -1,4 +1,6 @@
-<img width=100% src="https://capsule-render.vercel.app/api?type=waving&height=120&color=008000&section=header" alt="top"/>
+<img width=100% src="https://capsule-render.vercel.app/api?type=waving&height=120&color=ccffff&section=header" alt="top"/>
+
+
 # Um repositório para manter todas atividades
 ## 1 °:
 #### Atividade 1️⃣: Crie um código no qual voce tera um botão na tela que fará a impressao em console de quantas vezes o botao foi clicado
@@ -8,4 +10,4 @@
 ## 👌
 
 
-<img width=100% src="https://capsule-render.vercel.app/api?type=waving&height=120&color=008000&section=footer" alt="bottom"/>
+<img width=100% src="https://capsule-render.vercel.app/api?type=waving&height=120&color=ccffff&section=footer" alt="bottom"/>
