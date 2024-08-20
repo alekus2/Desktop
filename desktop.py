@@ -4,9 +4,6 @@ def contar_cliques():
     global contador
     contador += 1
     print ("Voce clicou: ",contador)
-    if contador == 10:
-     label_contador.config(text=f"davi voce é um bobão")
-     quit
 root = Tk()
 contador = 0
 frm = ttk.Frame(root, padding=200)
