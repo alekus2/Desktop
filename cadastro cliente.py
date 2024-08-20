@@ -1,47 +1,43 @@
-import tkinter as tk
 from tkinter import *
+from tkinter import ttk
 
-class App(tk.Frame):
-    def __init__(self, master):
-        super().__init__(master)
-        self.master = master
-        self.master.title("Cadastro Cliente")
-        self.pack(padx=20, pady=20)  
+root = Tk()
+frm = Frame(root, padx=400, pady=400, background="turquoise")
+frm.grid()
 
-        # Frame para o nome de usuário
-        self.frm_usuario = tk.Frame(self, padx=100, pady=100)
-        self.frm_usuario.pack()
+# #USUARIO
+usuario = Entry(frm, font=("Arial", 20))
+usuario.grid(column=0, row=1, padx=10, pady=10)
+label_usuario = ttk.Label(frm, text="Digite seu usuário.", font=("Arial", 40), background="turquoise",foreground='white')
+label_usuario.grid(column=0, row=0)
 
-        self.label_usuario = tk.Label(self.frm_usuario, text="Digite seu nome de usuário.", font=("Arial", 50),foreground="pink")
-        self.label_usuario.pack()
+# #SENHA
+senha = Entry(frm, font=("Arial", 20), show="*")
+senha.grid(column=0, row=3, padx=10, pady=10)
+label_senha = ttk.Label(frm, text="Digite sua senha.", font=("Arial", 40), background="turquoise",foreground='white'  )
+label_senha.grid(column=0, row=2)
 
-        self.usuario = tk.StringVar()
-        self.teclaenterusuario["textvariable"] = self.usuario
+# #CONFIRMAR SENHA
+confirmar_senha = Entry(frm, font=("Arial", 20), show="*")
+confirmar_senha.grid(column=0, row=5, padx=10, pady=10)
+label_confirmar_senha = ttk.Label(frm, text="Confirme sua senha.", font=("Arial", 40), background="turquoise",foreground='white' )
+label_confirmar_senha.grid(column=0, row=4)
 
-        # Frame para a senha
-        self.frm_senha = tk.Frame(self, padx=100, pady=100)
-        self.frm_senha.pack()
+# #LABEL DE RESULTADO
+resultado_label = ttk.Label(frm, text="", font=("Arial", 20), background="turquoise",foreground='white')
+resultado_label.grid(column=0, row=7, padx=10, pady=10)
 
-        self.label_senha = tk.Label(self.frm_senha, text="Digite sua senha.", font=("Arial", 50))
-        self.label_senha.pack()
+# PREENCHEDOR DE CAMPOS
+def cadastro_realizado():
+    if confirmar_senha.get() != senha.get():
+        resultado_label.config(text="As senhas não coincidem.", foreground="red")
+    elif confirmar_senha.get () == 0:
+         resultado_label.config(text="Porfavor,preencha o campo corretamente", foreground="red")
+    else:
+        resultado_label.config(text="Cadastro realizado :D", foreground="green",background='turquoise' )
 
-        self.teclaentersenha = tk.Entry(self.frm_senha, show="*")  # Mostrar caracteres como asteriscos
-        self.teclaentersenha.pack()
+# BOTAO LOGIN
+botao_salvar = ttk.Button(frm, text="LOGIN", command=cadastro_realizado)
+botao_salvar.grid(column=0, row=6, padx=10, pady=10)
 
-        self.senha = tk.StringVar()
-        self.teclaentersenha["textvariable"] = self.senha
-
-        # Bind de eventos para a tecla Enter
-        self.teclaenterusuario.bind('<Return>', self.imprimir_terminal_usuario)
-        self.teclaentersenha.bind('<Return>', self.imprimir_terminal_senha)
-
-    def imprimir_terminal_usuario(self, event):
-        print("Nome de usuário:", self.usuario.get())
-
-    def imprimir_terminal_senha(self, event):
-        print("Senha:", self.senha.get())
-
-if __name__ == "__main__":
-    root = tk.Tk()
-    app = App(root)
-    app.mainloop()
+root.mainloop()
