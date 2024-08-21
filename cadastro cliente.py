@@ -31,8 +31,8 @@ resultado_label.grid(column=0, row=7, padx=10, pady=10)
 def cadastro_realizado():
     if confirmar_senha.get() != senha.get():
         resultado_label.config(text="As senhas não coincidem.", foreground="red")
-    elif confirmar_senha.get () == 0:
-         resultado_label.config(text="Porfavor,preencha o campo corretamente", foreground="red")
+    elif confirmar_senha.get () or senha.get()== usuario.get () :
+         resultado_label.config(text="Porfavor,digite uma senha diferente do nome!", foreground="red")
     else:
         resultado_label.config(text="Cadastro realizado :D", foreground="green",background='turquoise' )
 
