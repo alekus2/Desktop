@@ -40,15 +40,15 @@ class App(tk.Frame):
         self.botao_proximo.grid(column=0, row=2, padx=10, pady=10, sticky='e')
 
         # USUARIO
-        self.frm_usuario = tk.Frame(self, padx=20, pady=20, background="turquoise")  # Configura a cor de fundo do frame do usuário
+        self.frm_usuario = tk.Frame(self, padx=20, pady=20) 
         self.frm_usuario.grid(column=0, row=1, padx=10, pady=10, sticky='nsew')
 
-        self.label_usuario = tk.Label(self.frm_usuario, text="Digite uma descrição", font=("Arial", 20), background="turquoise")
+        self.label_usuario = tk.Label(self.frm_usuario, text="Digite uma descrição", font=("Arial", 20)                                                                                               )
         self.label_usuario.grid(column=0, row=0)
 
         self.teclaenterusuario = tk.Entry(self.frm_usuario)
         self.teclaenterusuario.grid(column=0, row=1)
-
+        
         # RESULTADO DESCRIÇÃO
         self.resultado_label = ttk.Label(frm, text=" ", font=("Arial", 20), background="turquoise")
         self.resultado_label.grid(column=0, row=3, padx=10, pady=10)
