@@ -43,7 +43,7 @@ class App(tk.Frame):
         self.frm_usuario = tk.Frame(self, padx=20, pady=20) 
         self.frm_usuario.grid(column=0, row=1, padx=10, pady=10, sticky='nsew')
 
-        self.label_usuario = tk.Label(self.frm_usuario, text="Digite uma descrição", font=("Arial", 20)                                                                                               )
+        self.label_usuario = tk.Label(self.frm_usuario, text="Digite uma descrição", font=("Arial", 20))
         self.label_usuario.grid(column=0, row=0)
 
         self.teclaenterusuario = tk.Entry(self.frm_usuario)
