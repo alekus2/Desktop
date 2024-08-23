@@ -9,26 +9,26 @@ class App(Frame):
         self.pack(padx=20, pady=20)  
 
         # Frame para o nome de usuário
-        self.frm_usuario = Tk.frame(self, padx=20, pady=20)
+        self.frm_usuario = frame(self, padx=20, pady=20)
         self.frm_usuario.pack()
 
-        self.label_usuario = tk.Label(self.frm_usuario, text="Digite seu nome de usuário.", font=("Arial", 20))
+        self.label_usuario = Label(self.frm_usuario, text="Digite seu nome de usuário.", font=("Arial", 20))
         self.label_usuario.pack()
 
-        self.teclaenterusuario = tk.Entry(self.frm_usuario)
+        self.teclaenterusuario = Entry(self.frm_usuario)
         self.teclaenterusuario.pack()
 
         self.usuario = tk.StringVar()
         self.teclaenterusuario["textvariable"] = self.usuario
 
         # Frame para a senha
-        self.frm_senha = tk.Frame(self, padx=20, pady=20)
+        self.frm_senha = Frame(self, padx=20, pady=20)
         self.frm_senha.pack()
 
-        self.label_senha = tk.Label(self.frm_senha, text="Digite sua senha.", font=("Arial", 20))
+        self.label_senha = Label(self.frm_senha, text="Digite sua senha.", font=("Arial", 20))
         self.label_senha.pack()
 
-        self.teclaentersenha = tk.Entry(self.frm_senha, show="*")  # Mostrar caracteres como asteriscos
+        self.teclaentersenha = Entry(self.frm_senha, show="*")  # Mostrar caracteres como asteriscos
         self.teclaentersenha.pack()
 
         self.senha = tk.StringVar()
