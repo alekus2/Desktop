@@ -15,7 +15,6 @@ class AplicativoRestaurante:
         self.style.configure('Highlighted.TButton', background='#4caf50', foreground='#ffffff')
 
         self.pedidos = {}
-        self.nome_usuario = ""  # Renomeado para armazenar o nome do usuário
         self.tela_login()
 
     def tela_login(self):
@@ -55,7 +54,6 @@ class AplicativoRestaurante:
         elif usuario_texto == senha_texto:
             self.label_resultado.config(text="Usuário e senha não podem coincidir!", foreground="red")
         else:
-            self.nome_usuario = usuario_texto  # Armazenar o nome do usuário
             self.label_resultado.config(text="Cadastro realizado com sucesso!", foreground="green")
             self.frame_login.pack_forget()
             self.pagina_logada()
@@ -94,24 +92,15 @@ class AplicativoRestaurante:
         self.entry_quantidade = tk.Entry(self.frame_dados_cliente, font=("Arial", 12), bg="#ffffff", bd=0)
         self.entry_quantidade.grid(row=2, column=1, padx=20, pady=10, sticky="w")
 
-        botao_salvar = ttk.Button(self.frame_dados_cliente, text="Salvar Dados", style="Highlighted.TButton", command=self.salvar_dados_cliente)
-        botao_salvar.grid(row=3, column=0, columnspan=2, pady=20)
-
-    def salvar_dados_cliente(self):
-        # Não há necessidade de usar o nome do usuário aqui
-        self.menu()
-
-    def menu(self):
-        for widget in self.frame_menu.winfo_children():
-            widget.destroy()
-
-        lbl_cardapio = tk.Label(self.frame_menu, text=f"Olá, {self.nome_usuario}", font=("Arial", 16, "bold"), bg="#1b98e0")
+    def menu(self,dados_cliente):
+        self.dados_cliente (self.entry_nome.get()=)
+        lbl_cardapio = tk.Label(self.frame_menu, text="Olá,"nome_cliente, font=("Arial", 16, "bold"), bg="#1b98e0")
         lbl_cardapio.pack(padx=20, pady=(19, 9))
 
         lbl_cardapio = tk.Label(self.frame_menu, text="Cardápio", font=("Arial", 14, "bold"), bg="#1b98e0")
         lbl_cardapio.pack(padx=20, pady=(20, 10))
 
-        lbl_aviso = tk.Label(self.frame_menu, text="Por Favor, insira os dados da sua mesa para adicionar os pedidos!", font=("Arial", 10), bg="#1b98e0")
+        lbl_aviso = tk.Label(self.frame_menu, text="Por Favor,insira os dados da sua mesa para adicionar os pedidos!", font=("Arial", 10), bg="#1b98e0")
         lbl_aviso.pack(padx=21, pady=(21, 11))
 
         self.lista_pedidos = tk.Listbox(self.frame_menu, font=("Arial", 12), bg="#006494", bd=0, highlightthickness=0)
@@ -119,6 +108,8 @@ class AplicativoRestaurante:
 
         self.frame_cardapio = tk.Frame(self.frame_menu, bg="#006494")
         self.frame_cardapio.pack(padx=20, pady=10, fill=tk.BOTH, expand=True)
+        
+        # Definição do cardápio
         self.itens_cardapio = [
             {'nome': 'Bebidas', 'imagem': 'bebidas.jpg'},
             {'nome': 'Cachorro Quente', 'imagem': 'catioro-quente.jpg'},
@@ -126,7 +117,7 @@ class AplicativoRestaurante:
             {'nome': 'Cachorrao Caramelo (sim é comestivel)', 'imagem': 'cachorro-caramelo.jpg'},
             {'nome': 'A boa ne pae 🤭😎', 'imagem': 'a-boa.jpg'},
         ]
-
+        
         for item in self.itens_cardapio:
             frame_item = tk.Frame(self.frame_cardapio, bg="#006494")
             frame_item.pack(pady=5, padx=5, fill=tk.BOTH, expand=True)
@@ -153,7 +144,7 @@ class AplicativoRestaurante:
         lbl_pedidos_pendentes = tk.Label(self.frame_finalizar_pedido, text="Pedidos Pendentes", font=("Arial", 14, "bold"), bg="#1b98e0")
         lbl_pedidos_pendentes.pack(padx=20, pady=(20, 10))
         
-        lbl_aviso = tk.Label(self.frame_finalizar_pedido, text="Clique no seu pedido para selecioná-lo!", font=("Arial", 10 ), bg="#1b98e0")
+        lbl_aviso = tk.Label(self.frame_finalizar_pedido, text="Clique no seu pedido para seleciona-lo!", font=("Arial", 10 ), bg="#1b98e0")
         lbl_aviso.pack(padx=21, pady=(21, 11))
 
         self.lista_pedidos_pendentes = tk.Listbox(self.frame_finalizar_pedido, font=("Arial", 12), bg="#006494", bd=0, highlightthickness=0)
@@ -214,6 +205,7 @@ class AplicativoRestaurante:
             self.lista_pedidos_pendentes.delete(index)
             self.atualizar_lista_pedidos()
         self.mostrar_mensagem("Sucesso", "Pedido retirado com sucesso!")
+        
 
     def finalizar_pedido(self):
         indices_selecionados = self.lista_pedidos.curselection()
@@ -225,11 +217,8 @@ class AplicativoRestaurante:
             self.lista_pedidos_pendentes.insert(tk.END, texto_pedido)
             self.lista_pedidos.delete(index)
         self.mostrar_mensagem("Sucesso", "Pedido finalizado com sucesso!")
-        time.sleep (2)
-        self.mostrar_mensagem("Acabou!","Bom esse foi o restaurante do ederson :) \n Até mais!")
-        time.sleep(1.5)
+        time.sleep (3)
         root.quit()
-
     def mostrar_mensagem(self, titulo, mensagem):
         messagebox.showinfo(titulo, mensagem)
 
