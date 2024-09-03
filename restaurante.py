@@ -261,7 +261,6 @@ class AplicativoRestaurante:
             self.lista_pedidos_pendentes.insert(tk.END, texto_pedido)
             self.lista_pedidos.delete(index)
         self.mostrar_mensagem("Sucesso", "Pedido finalizado com sucesso!")
-        time.sleep(3)
         self.root.quit()
 
     def mostrar_mensagem(self, titulo, mensagem):
