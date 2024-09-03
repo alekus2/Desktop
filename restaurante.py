@@ -45,19 +45,19 @@ class AplicativoRestaurante:
 
         self.logo_pequena()
 
-        tk.Label(self.frm, text="Digite seu usuário:", font=("Agrandir", 20), background="#ffff66", foreground='#ff9933').grid(column=0, row=1, padx=10, pady=5, sticky=tk.W)
+        tk.Label(self.frm, text="Digite seu usuário:", font=("Constantia", 20), background="#ffff66", foreground='#ff9933').grid(column=0, row=1, padx=10, pady=5, sticky=tk.W)
         self.usuario = tk.Entry(self.frm, font=("Arial", 16))
         self.usuario.grid(column=0, row=2, padx=10, pady=5)
 
-        tk.Label(self.frm, text="Digite sua senha:", font=("Agrandir", 20), background="#ffff66", foreground='#ff9933').grid(column=0, row=3, padx=10, pady=5, sticky=tk.W)
+        tk.Label(self.frm, text="Digite sua senha:", font=("Constantia", 20), background="#ffff66", foreground='#ff9933').grid(column=0, row=3, padx=10, pady=5, sticky=tk.W)
         self.senha = tk.Entry(self.frm, font=("Arial", 16), show="*")
         self.senha.grid(column=0, row=4, padx=10, pady=5)
 
-        tk.Label(self.frm, text="Confirme sua senha:", font=("Agrandir", 20), background="#ffff66", foreground='#ff9933').grid(column=0, row=5, padx=10, pady=5, sticky=tk.W)
+        tk.Label(self.frm, text="Confirme sua senha:", font=("Constantia", 20), background="#ffff66", foreground='#ff9933').grid(column=0, row=5, padx=10, pady=5, sticky=tk.W)
         self.confirmar_senha = tk.Entry(self.frm, font=("Arial", 16), show="*")
         self.confirmar_senha.grid(column=0, row=6, padx=10, pady=5)
 
-        self.resultado_label = tk.Label(self.frm, text="", font=("Agrandir", 16), background="#ffff66", foreground='#ff9933')
+        self.resultado_label = tk.Label(self.frm, text="", font=("Constantia", 16), background="#ffff66", foreground='#ff9933')
         self.resultado_label.grid(column=0, row=8, padx=10, pady=10)
 
         tk.Button(self.frm, text="LOGIN", command=self.cadastro_realizado).grid(column=0, row=7, padx=10, pady=10)
@@ -112,24 +112,24 @@ class AplicativoRestaurante:
         self.pedidos_pendentes()
 
     def dados_cliente(self):
-        tk.Label(self.frame_dados_cliente, text="Nome:", font=("Arial", 14, "bold"), bg="#f0f0f0").grid(row=0, column=0, padx=20, pady=(20, 10), sticky="w")
-        self.entry_nome = tk.Entry(self.frame_dados_cliente, font=("Arial", 12), bg="#ffffff", bd=0)
+        tk.Label(self.frame_dados_cliente, text="Nome:", font=("Constantia", 14, "bold"), bg="#f0f0f0").grid(row=0, column=0, padx=20, pady=(20, 10), sticky="w")
+        self.entry_nome = tk.Entry(self.frame_dados_cliente, font=("Constantia", 12), bg="#ffffff", bd=0)
         self.entry_nome.grid(row=0, column=1, padx=20, pady=(20, 10), sticky="w")
 
-        tk.Label(self.frame_dados_cliente, text="Mesa:", font=("Arial", 14, "bold"), bg="#f0f0f0").grid(row=1, column=0, padx=20, pady=10, sticky="w")
-        self.entry_mesa = tk.Entry(self.frame_dados_cliente, font=("Arial", 12), bg="#ffffff", bd=0)
+        tk.Label(self.frame_dados_cliente, text="Mesa:", font=("Constantia", 14, "bold"), bg="#f0f0f0").grid(row=1, column=0, padx=20, pady=10, sticky="w")
+        self.entry_mesa = tk.Entry(self.frame_dados_cliente, font=("Constantia", 12), bg="#ffffff", bd=0)
         self.entry_mesa.grid(row=1, column=1, padx=20, pady=10, sticky="w")
 
-        tk.Label(self.frame_dados_cliente, text="Quantidade de itens:", font=("Arial", 14, "bold"), bg="#f0f0f0").grid(row=2, column=0, padx=20, pady=10, sticky="w")
-        self.entry_quantidade = tk.Entry(self.frame_dados_cliente, font=("Arial", 12), bg="#ffffff", bd=0)
+        tk.Label(self.frame_dados_cliente, text="Quantidade de itens:", font=("Constantia", 14, "bold"), bg="#f0f0f0").grid(row=2, column=0, padx=20, pady=10, sticky="w")
+        self.entry_quantidade = tk.Entry(self.frame_dados_cliente, font=("Constantia", 12), bg="#ffffff", bd=0)
         self.entry_quantidade.grid(row=2, column=1, padx=20, pady=10, sticky="w")
 
     def menu(self, usuario_nome):
-        tk.Label(self.frame_menu, text=f"Olá, {usuario_nome}", font=("Arial", 16, "bold"), bg="#ff9933").pack(padx=20, pady=(19, 9))
-        tk.Label(self.frame_menu, text="Cardápio", font=("Arial", 14, "bold"), bg="#ff9933").pack(padx=20, pady=(20, 10))
-        tk.Label(self.frame_menu, text="Por Favor, insira os dados da sua mesa para adicionar os pedidos!", font=("Arial", 10), bg="#ff9933").pack(padx=21, pady=(21, 11))
+        tk.Label(self.frame_menu, text=f"Olá, {usuario_nome}", font=("Gil Sans", 16, "bold"), bg="#ff9933").pack(padx=20, pady=(19, 9))
+        tk.Label(self.frame_menu, text="Cardápio", font=("Gil Sans", 14, "bold"), bg="#ff9933").pack(padx=20, pady=(20, 10))
+        tk.Label(self.frame_menu, text="Por Favor, insira os dados da sua mesa para adicionar os pedidos!", font=("Constantia", 10), bg="#ff9933").pack(padx=21, pady=(21, 11))
         
-        self.lista_pedidos = tk.Listbox(self.frame_menu, font=("Arial", 12), bg="#ffff66", bd=0, highlightthickness=0, selectmode=tk.MULTIPLE)
+        self.lista_pedidos = tk.Listbox(self.frame_menu, font=("Constantia", 12), bg="#ffff66", bd=0, highlightthickness=0, selectmode=tk.MULTIPLE)
         self.lista_pedidos.pack(padx=20, pady=10, fill=tk.BOTH, expand=True)
 
         self.frame_cardapio = tk.Frame(self.frame_menu, bg="#ffff66")
@@ -154,7 +154,7 @@ class AplicativoRestaurante:
             imagem = Image.open(caminho_imagem)
             imagem = imagem.resize((50, 50))
             foto = ImageTk.PhotoImage(imagem)
-            tk.Label(frame_item, text=item["nome"], font=("Arial", 12), bg="#ffff66").pack(side=tk.LEFT)
+            tk.Label(frame_item, text=item["nome"], font=("Gil Sans", 12), bg="#ffff66").pack(side=tk.LEFT)
 
             label_imagem = tk.Label(frame_item, image=foto, bg="#ffff66")
             label_imagem.image = foto
@@ -168,11 +168,11 @@ class AplicativoRestaurante:
         self.botao_adicionar_todos.pack(pady=10)
 
     def pedidos_pendentes(self):
-        tk.Label(self.frame_finalizar_pedido, text="Pedidos Pendentes", font=("Arial", 14, "bold"), bg="#ff9933").pack(padx=20, pady=(20, 10))
+        tk.Label(self.frame_finalizar_pedido, text="Pedidos Pendentes", font=("Gil Sans", 14, "bold"), bg="#ff9933").pack(padx=20, pady=(20, 10))
         
-        tk.Label(self.frame_finalizar_pedido, text="Clique no seu pedido para seleciona-lo!", font=("Arial", 10), bg="#ff9933").pack(padx=21, pady=(21, 11))
+        tk.Label(self.frame_finalizar_pedido, text="Clique no seu pedido para seleciona-lo!", font=("Constantia", 10), bg="#ff9933").pack(padx=21, pady=(21, 11))
 
-        self.lista_pedidos_pendentes = tk.Listbox(self.frame_finalizar_pedido, font=("Arial", 12), bg="#ffff66", bd=0, highlightthickness=0, selectmode=tk.MULTIPLE)
+        self.lista_pedidos_pendentes = tk.Listbox(self.frame_finalizar_pedido, font=("Constantia", 12), bg="#ffff66", bd=0, highlightthickness=0, selectmode=tk.MULTIPLE)
         self.lista_pedidos_pendentes.pack(padx=20, pady=10, fill=tk.BOTH, expand=True)
 
         frame_botoes = tk.Frame(self.frame_finalizar_pedido, bg="#ffff66")
