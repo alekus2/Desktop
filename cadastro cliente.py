@@ -2,7 +2,6 @@ from tkinter import *
 from tkinter import ttk
 from PIL import Image, ImageTk
 
-# Função para validar e processar o cadastro
 def cadastro_realizado():
     usuario_text = usuario.get().strip()
     senha_text = senha.get().strip()
@@ -18,20 +17,17 @@ def cadastro_realizado():
         resultado_label.config(text="Cadastro realizado com sucesso!", foreground="green")
         root.quit()
 
-# Configuração da janela principal
 root = Tk()
 root.title("Login Form")
 root.geometry("800x700")  # Ajuste o tamanho da janela conforme necessário
 
-# Frame para a logo principal
+
 logo_frame = Frame(root, background="#ffff66", width=400, height=600)
 logo_frame.grid(row=0, column=0, sticky=(N, S, E, W))
 
-# Logo principal da pizzaria
 label_imagem = Label(logo_frame, background="#ffff66")
 label_imagem.pack(fill=BOTH, expand=True)
 
-# Lista de imagens e índice
 img_index = 0
 imagens = [
     'Imagens/Logo pizzaria.png',
@@ -41,15 +37,13 @@ imagens = [
 def logo_pizzaria():
     image_path = imagens[img_index]
     img = Image.open(image_path)
-    img = img.resize((400, 800))  # Ajuste para cobrir toda a área
+    img = img.resize((400, 800))
     img_tk = ImageTk.PhotoImage(img)
     label_imagem.config(image=img_tk)
     label_imagem.image = img_tk
 
-# Inicializa a exibição da logo
 logo_pizzaria()
 
-# Frame principal para o formulário de login
 frm = Frame(root, padx=65, pady=65, background="#ffff66", width=400, height=600)
 frm.grid(row=0, column=1, sticky=(N, S, E, W))
 

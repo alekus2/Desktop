@@ -65,7 +65,7 @@ class AplicativoRestaurante:
     def logo_pizzaria(self):
         image_path = self.imagens[self.img_index]
         img = Image.open(image_path)
-        img = img.resize((400, 700))  # Ajuste para cobrir toda a área
+        img = img.resize((400, 700)) 
         img_tk = ImageTk.PhotoImage(img)
         self.label_imagem.config(image=img_tk)
         self.label_imagem.image = img_tk
@@ -73,7 +73,7 @@ class AplicativoRestaurante:
     def logo_pequena(self):
         image_path = 'Imagens/Logo-tipo-sem-fundo.png'
         img = Image.open(image_path)
-        img = img.resize((250, 250))  # Ajuste o tamanho da imagem pequena conforme necessário
+        img = img.resize((250, 250)) 
         img_tk = ImageTk.PhotoImage(img)
         self.label_logo_pequena.config(image=img_tk)
         self.label_logo_pequena.image = img_tk
