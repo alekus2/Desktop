@@ -31,34 +31,32 @@ def backspace():
 
 def calcular():
     global valor
+    valor = valor.replace("^", "**").replace("÷","/").replace("×","*").replace(",",".")
+    if "%" in valor:
+        while "%" in valor:
+            idx = valor.index("%")
+            left_part = valor[:idx].rstrip()
+            if left_part:
+                if left_part[-1] in "+-*/":
+                    left_part = left_part[:-1]
+                try:
+                    left_value = eval(left_part)
+                except:
+                    left_value = 1 
+                valor = valor[:idx] + f"*{left_value}/100" + valor[idx+1:]
+    if "√" in valor:
+        valor = valor.replace("√", "math.sqrt(") + ")"
     try:
-        # Substitui símbolos para operadores corretos
-        valor = valor.replace("÷", "/").replace("x", "*").replace("^", "**")
-        
-        # Trata porcentagem
-        if "%" in valor:
-            partes = valor.split("%")
-            if len(partes) == 2:
-                # Calcula a porcentagem
-                base = partes[0].strip()
-                percentual = partes[1].strip()
-                
-                if base:
-                    base_value = eval(base)
-                    if percentual:
-                        percentual_value = eval(percentual)
-                        porcentagem = (base_value * percentual_value) / 100
-                        valor = str(porcentagem)
-                else:
-                    raise ValueError("Erro: Número antes da porcentagem não encontrado")
-        if "√" in valor:
-            valor = valor.replace("√", "math.sqrt(") + ")"
-        resultado = eval(valor)
+        resultado = eval(valor, {"math": math})
+        if isinstance(resultado, float):
+            if resultado.is_integer():
+                resultado = int(resultado)
         valor_texto.set(resultado)
         valor = str(resultado)
     except Exception as e:
         valor_texto.set("Erro")
         valor = ''
+
 # CALCULADORA
 valor_texto = StringVar()
 conta_label = Label(frame_resultado, textvariable=valor_texto, width=12, height=4, padx=145, relief=FLAT, anchor="e", justify="right", font="Ivy 18", bg=cor_main)
@@ -85,10 +83,10 @@ botao5.place(x=0, y=51)
 botao6 = Button(corpo, width=7, height=2, command=lambda: valor_texto.set(''), text="AC", font=("Ivy 13 bold"), bg="#ff9933", relief=RAISED, overrelief=RIDGE)
 botao6.place(x=80, y=51)
 
-botao7 = Button(corpo, width=7, height=2, command=lambda: entrar_valor1("**"), text="^", font=("Ivy 13 bold"), relief=RAISED, overrelief=RIDGE)
+botao7 = Button(corpo, width=7, height=2, command=lambda: entrar_valor1("^"), text="^", font=("Ivy 13 bold"), relief=RAISED, overrelief=RIDGE)
 botao7.place(x=160, y=51)
 
-botao8 = Button(corpo, width=7, height=2, command=lambda: entrar_valor1("/"), text="÷", font=("Ivy 13 bold"), relief=RAISED, overrelief=RIDGE)
+botao8 = Button(corpo, width=7, height=2, command=lambda: entrar_valor1("÷"), text="÷", font=("Ivy 13 bold"), relief=RAISED, overrelief=RIDGE)
 botao8.place(x=240, y=51)
 
 # TERCEIRA SESSÃO
@@ -101,7 +99,7 @@ botao10.place(x=80, y=102)
 botao11 = Button(corpo, width=7, height=2, command=lambda: entrar_valor1("9"), text="9", font=("Ivy 13 bold"), relief=RAISED, overrelief=RIDGE)
 botao11.place(x=160, y=102)
 
-botao12 = Button(corpo, width=7, height=2, command=lambda: entrar_valor1("*"), text="×", font=("Ivy 13 bold"), relief=RAISED, overrelief=RIDGE)
+botao12 = Button(corpo, width=7, height=2, command=lambda: entrar_valor1("×"), text="×", font=("Ivy 13 bold"), relief=RAISED, overrelief=RIDGE)
 botao12.place(x=240, y=102)
 
 # QUARTA SESSÃO
@@ -144,11 +142,3 @@ botao24= Button(corpo,width=7,height=2,command= calcular,text="=",font=("Ivy 13 
 botao24.place(x=240,y=256)
 
 root.mainloop()
-
-
-#ERROS: O 00 NAO FUNCIONA COMO UM DECIMAL.
-#ERRO 2: A CONTA NAO APARECE NO RESULTADO AINDA,SOMENTE NO INPUT.
-#ERRO 3: A RAIZ QUADRADA NAO FUNCIONA.
-#ERRO 4: A EXPONENCIAÇÃO NAO É IGUAL AO BOTAO DELA.
-#ERRO 5: A DIVISAO NAO FUNCIONA.
-#ERRO 6: A PORCENTAGEM NAO FUNCIONA.
