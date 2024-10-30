@@ -1,17 +1,36 @@
-from tkinter import *
 
-root = Tk()
-root.title("Calculadora do Alek")
-root.geometry("320x500")
-cor_main="#13283d"
+num=0
+def inc():
+    global num
+    num += 1
+    return num
 
-resultado = Frame(root,width=320,height=135,bg=cor_main)
-resultado.grid(row=0,column=0)
+def lista_de_talhoes(parcela_nova):
+    talhoes={talhao : parcela_nova}
+    x = int(input("Insira a quantidade de talhões que deseja alterar: "))
+    for _ in range(x):
+        talhao = inc()  
+        if talhao not in talhoes:
+            talhoes[talhao] = 1
+        else:
+            talhoes[talhao] += 1
+   
+   
+    print(talhoes)
 
-corpo=Frame(root,width=320,height=300)
-corpo.grid(row=1,column=0)
-
-botao1= Button(corpo,width=14,height=4,text="C")
-botao1.place(x=0,y=0)
-
-root.mainloop()
+def contagem():
+    parcela = int(input("Insira a quantidade de parcelas: "))
+    global parcela_nova
+    if parcela < 3 or parcela == 2:
+        return parcela
+    else:
+        try:
+            if parcela % 2 == 0:
+                parcela_nova=parcela/2
+            else:
+                parcela_nova=(parcela+1)/2
+        except ValueError:
+            print("Entrada inválida.")
+            return 0
+parcela_nova = contagem()
+lista_de_talhoes(parcela_nova)
