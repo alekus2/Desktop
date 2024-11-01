@@ -1,47 +1,39 @@
+# import random
+# import os
+
+# numero_aleatorio=random.randint(1,10)
+# chute=input ("Tente adivinhar o numero entre 1 e 10. \n")
+# chute=int(chute)
+# while True:
+#     if chute == numero_aleatorio:
+#         print ("Voce ganhou :D")
+#         break
+#     else:
+#         print ("vc errou ,o numero era ",numero_aleatorio)
+
+
 import csv
 
-num = 0
+with open('eggs.csv', 'w', newline='') as csvfile:
+    spamwriter = csv.writer(csvfile, delimiter=' ',
+                            quotechar='|', quoting=csv.QUOTE_MINIMAL)
+    spamwriter.writerow(['Spam'] * 5 + ['Baked Beans'])
+    spamwriter.writerow(['Spam', 'Lovely Spam', 'Wonderful Spam'])
 
-def inc():
-    global num
-    num += 1
-    return num
 
-def carregar_talhoes(arquivo):
-    talhoes = {}
-    try:
-        with open(arquivo, mode='r') as file:
-            reader = csv.reader(file)
-            next(reader)
-            for row in reader:
-                talhao = int(row[0])
-                parcelas_talho = int(row[1])
-                talhoes[talhao] = parcelas_talho
-    except FileNotFoundError:
-        print("Arquivo não encontrado. Verifique o nome do arquivo.")
-    except ValueError:
-        print("Erro ao converter dados do CSV. Verifique o formato.")
-    return talhoes
+# from pptx import Presentation
 
-def contagem(talhoes):
-    global parcela_nova
-    for talhao, parcelas_talho in talhoes.items():
-        if parcelas_talho < 3:
-            parcela_nova = parcelas_talho
-        else:
-            if parcelas_talho % 2 == 0:
-                parcela_nova = parcelas_talho // 2
-            else:
-                parcela_nova = (parcelas_talho + 1) // 2
-        talhoes[talhao] = parcela_nova
-    print("Talhões e suas parcelas:", talhoes)
+# apresentacao = Presentation()
 
-def main():
-    arquivo = 'talhoes.csv' 
-    talhoes = carregar_talhoes(arquivo)
-    if talhoes:
-        contagem(talhoes)
-    else:
-        print("Nenhum talhão carregado.")
+# # editar o ppt 
+# slide1 = apresentacao.slides.add_slide(apresentacao.slide_layouts[0]) # slide com titulo e subtitulo
+# # slide1 = apresentacao.slides.add_slide(apresentacao.slide_layouts[6]) # slide em branco
 
-main()
+# titulo = slide1.shapes.title 
+# subtitulo = slide1.placeholders[1]
+
+# titulo.text = "1º Slide do Lira"
+# subtitulo.text = "Tamo criando ppt com Python"
+
+# # salvar esse ppt
+# apresentacao.save("MeuPPT.pptx")

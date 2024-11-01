@@ -1,5 +1,4 @@
 import csv
-
 num = 0
 
 def inc():
@@ -12,26 +11,24 @@ def carregar_talhoes(arquivo):
     try:
         with open(arquivo, mode='r') as file:
             reader = csv.reader(file)
-            header = next(reader, None)  # Pula o cabeçalho, mas não levanta StopIteration
+            header = next(reader, None)
             if header is None:
                 print("O arquivo CSV está vazio.")
                 return talhoes
             for row in reader:
                 if len(row) < 2:
-                    continue  # Ignora linhas com menos de duas colunas
+                    continue  
                 try:
-                    talhao = int(row[0])  # Converte o talhão para inteiro
-                    parcelas_talho = int(row[1])  # Converte a quantidade de parcelas para inteiro
-                    talhoes[talhao] = parcelas_talho
+                    talhao = int(row[0]) 
+                    parcelas_talho = int(row[1]) 
+                    talhoes[talhao]=parcelas_talho
                 except ValueError:
                     print(f"Erro ao converter dados na linha: {row}.")
     except FileNotFoundError:
         print("Arquivo não encontrado. Verifique o nome do arquivo.")
     except Exception as e:
-        print(f"Ocorreu um erro: {e}")
-    
+        print(f"Ocorreu um erro: {e}")    
     return talhoes
-
 
 def contagem(talhoes):
     global parcela_nova
@@ -43,15 +40,25 @@ def contagem(talhoes):
                 parcela_nova = parcelas_talho // 2
             else:
                 parcela_nova = (parcelas_talho + 1) // 2
-        talhoes[talhao] = parcela_nova
-    print("Talhões e suas parcelas:", talhoes)
+        with open('Talhão atualizado.csv', 'w', newline='') as csvfile:
+            spamwriter = csv.writer(csvfile, delimiter=' ',quoting=csv.QUOTE_MINIMAL)
+            spamwriter.writerow(['Talhoes Atualizados'])
+            for row in talhoes:
+                if len(talhoes) < 2:
+                    continue  
+                try:
+                    talhao = int(talhoes[1]) 
+                    parcela_nova = int(talhoes[2]) 
+                    talhoes[talhao] = parcela_nova
+                except ValueError:
+                    print(f"Erro ao converter dados na linha: {row}.")
+            spamwriter.writerow(talhoes[talhao]) #deve ter a nova tabela de parcelas que o script fez.
 
 def main():
-    arquivo = r'G:\Nova pasta\Atividades-SENAC-AGOST\MS florestal\tls.csv'  
+    arquivo = r'G:\Alex Qualidade\Atividades-SENAC-AGOST\MS florestal\tls.csv'  
     talhoes = carregar_talhoes(arquivo)
     if talhoes:
         contagem(talhoes)
     else:
         print("Nenhum talhão carregado.")
-
 main()
