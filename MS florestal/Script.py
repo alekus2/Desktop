@@ -1,10 +1,4 @@
 import csv
-num = 0
-
-def inc():
-    global num
-    num += 1
-    return num
 
 def carregar_talhoes(arquivo):
     talhoes = {}
@@ -21,7 +15,7 @@ def carregar_talhoes(arquivo):
                 try:
                     talhao = int(row[0]) 
                     parcelas_talho = int(row[1]) 
-                    talhoes[talhao]=parcelas_talho
+                    talhoes[talhao] = parcelas_talho
                 except ValueError:
                     print(f"Erro ao converter dados na linha: {row}.")
     except FileNotFoundError:
@@ -31,28 +25,23 @@ def carregar_talhoes(arquivo):
     return talhoes
 
 def contagem(talhoes):
-    global parcela_nova
+    novos_talhoes = {} 
     for talhao, parcelas_talho in talhoes.items():
-        if parcelas_talho < 3:
-            parcela_nova = parcelas_talho
-        else:
-            if parcelas_talho % 2 == 0:
+        if talhao % 2 == 0:
+            if parcelas_talho < 3:
+                parcela_nova = parcelas_talho
+            elif parcelas_talho % 2 == 0:
                 parcela_nova = parcelas_talho // 2
             else:
                 parcela_nova = (parcelas_talho + 1) // 2
-        with open('Talhão atualizado.csv', 'w', newline='') as csvfile:
-            spamwriter = csv.writer(csvfile, delimiter=' ',quoting=csv.QUOTE_MINIMAL)
-            spamwriter.writerow(['Talhoes Atualizados'])
-            for row in talhoes:
-                if len(talhoes) < 2:
-                    continue  
-                try:
-                    talhao = int(talhoes[1]) 
-                    parcela_nova = int(talhoes[2]) 
-                    talhoes[talhao] = parcela_nova
-                except ValueError:
-                    print(f"Erro ao converter dados na linha: {row}.")
-            spamwriter.writerow(talhoes[talhao]) #deve ter a nova tabela de parcelas que o script fez.
+            
+            novos_talhoes[talhao] = parcela_nova
+
+    with open('Talhão_atualizado.csv', 'w', newline='') as csvfile:
+        spamwriter = csv.writer(csvfile, delimiter=';', quoting=csv.QUOTE_MINIMAL)
+        spamwriter.writerow(['Talhao', 'Parcelas Atualizadas'])
+        for talhao, parcelas in novos_talhoes.items():
+            spamwriter.writerow([talhao, parcelas]) 
 
 def main():
     arquivo = r'G:\Alex Qualidade\Atividades-SENAC-AGOST\MS florestal\tls.csv'  
@@ -61,4 +50,5 @@ def main():
         contagem(talhoes)
     else:
         print("Nenhum talhão carregado.")
+
 main()
