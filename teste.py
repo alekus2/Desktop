@@ -338,3 +338,16 @@ botao_salvar.grid(column=0, row=8, padx=10, pady=5, sticky=W)
 
 # Inicia o loop principal da interface gráfica
 root.mainloop()
+
+
+# Carregando a imagem e posicionando-a dentro do frame
+imagem = PhotoImage(file="logo.png")
+label_imagem = Label(frm, image=imagem, background="#66cc00")
+label_imagem.place(x=0, y=0)
+
+# Ajuste a posição do texto para que ele fique sobre a imagem
+label_msg = ttk.Label(frm, text="Olá, Bem-vindo ao CONTADOR RURAL", font=("Cambria", 16), background="#66cc00", foreground='#e0e0e0')
+label_msg.place(x=50, y=30)  # Ajuste as coordenadas conforme necessário
+
+label_msg2 = ttk.Label(frm, text="Preencha o campo abaixo com o caminho relativo do arquivo que deseja contar.", font=("Cambria", 10), background="#66cc00", foreground='#e0e0e0')
+label_msg2.place(x=50, y=70)  # Ajuste as coordenadas conforme necessário
