@@ -1,6 +1,5 @@
 from tkinter import *
 from tkinter import ttk
-from PIL import Image, ImageTk
 
 def cadastro_realizado():
     usuario_text = usuario.get().strip()
@@ -21,51 +20,8 @@ root = Tk()
 root.title("Login Form")
 root.geometry("800x700")  # Ajuste o tamanho da janela conforme necessário
 
-
-logo_frame = Frame(root, background="#ffff66", width=400, height=600)
-logo_frame.grid(row=0, column=0, sticky=(N, S, E, W))
-
-label_imagem = Label(logo_frame, background="#ffff66")
-label_imagem.pack(fill=BOTH, expand=True)
-
-img_index = 0
-imagens = [
-    'Imagens/Logo pizzaria.png',
-    'Imagens/Logo-tipo-sem-fundo.png'
-]
-
-def logo_pizzaria():
-    image_path = imagens[img_index]
-    img = Image.open(image_path)
-    img = img.resize((400, 800))
-    img_tk = ImageTk.PhotoImage(img)
-    label_imagem.config(image=img_tk)
-    label_imagem.image = img_tk
-
-logo_pizzaria()
-
 frm = Frame(root, padx=65, pady=65, background="#ffff66", width=400, height=600)
 frm.grid(row=0, column=1, sticky=(N, S, E, W))
-
-# Logo pequena acima do formulário de login
-logo_pequena_frame = Frame(frm, background="#ffff66")
-logo_pequena_frame.grid(row=0, column=0, padx=1, pady=1, sticky=W)
-
-# Logo pequena para o formulário
-label_logo_pequena = Label(logo_pequena_frame, background="#ffff66")
-label_logo_pequena.pack()
-
-# Adicionar logo pequena (ajuste o caminho e tamanho conforme necessário)
-def logo_pequena():
-    image_path = 'Imagens/Logo-tipo-sem-fundo.png'  # Ajuste o caminho da logo pequena
-    img = Image.open(image_path)
-    img = img.resize((250, 250))  # Ajuste o tamanho da imagem pequena conforme necessário
-    img_tk = ImageTk.PhotoImage(img)
-    label_logo_pequena.config(image=img_tk)
-    label_logo_pequena.image = img_tk
-
-# Inicializa a exibição da logo pequena
-logo_pequena()
 
 # Label e Entry para usuário
 label_usuario = ttk.Label(frm, text="Digite seu usuário:", font=("Agrandir", 20), background="#ffff66", foreground='#ff9933')

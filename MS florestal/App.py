@@ -1,144 +1,131 @@
 from tkinter import *
-import math
+from tkinter import ttk
+import csv
+import tkinter as tk
+
+def carregar_talhoes(arquivo):
+    talhoes = {}
+    try:
+        with open(arquivo, mode='r') as file:
+            reader = csv.reader(file)
+            header = next(reader, None)
+            if header is None:
+                print("O arquivo CSV está vazio.")
+                return talhoes
+            for row in reader:
+                if len(row) < 2:
+                    continue  
+                try:
+                    talhao = int(row[0]) 
+                    parcelas_talho = int(row[1]) 
+                    talhoes[talhao] = parcelas_talho
+                except ValueError:
+                    print(f"Erro ao converter dados na linha: {row}.")
+    except FileNotFoundError:
+        print("Arquivo não encontrado. Verifique o nome do arquivo.")
+    except Exception as e:
+        print(f"Ocorreu um erro: {e}")    
+    return talhoes
+
+def contagem(talhoes):
+    novos_talhoes = {} 
+    for talhao, parcelas_talho in talhoes.items():
+        if talhao % 2 == 0:
+            if parcelas_talho < 3:
+                parcela_nova = parcelas_talho
+            elif parcelas_talho % 2 == 0:
+                parcela_nova = parcelas_talho // 2
+            else:
+                parcela_nova = (parcelas_talho + 1) // 2
+            
+            novos_talhoes[talhao] = parcela_nova
+
+    with open('Talhão_atualizado.csv', 'w', newline='') as csvfile:
+        spamwriter = csv.writer(csvfile, delimiter=';', quoting=csv.QUOTE_MINIMAL)
+        spamwriter.writerow(['Talhao', 'Parcelas Atualizadas'])
+        for talhao, parcelas in novos_talhoes.items():
+            spamwriter.writerow([talhao, parcelas]) 
+
+def apagar_talhoes(talhoes):
+    apagador_talhoes = {}
+    for talhao, parcelas_talho in talhoes.items():
+        if talhao % 2 >= 1:
+            if parcelas_talho < 3:
+                parcelas_novas = parcelas_talho
+            elif parcelas_talho % 2 == 0:
+                parcelas_novas = parcelas_talho // 2
+            else:
+                parcelas_novas = (parcelas_talho + 1) // 2
+            apagador_talhoes[talhao] = parcelas_novas
+    return apagador_talhoes 
+
+def main_salvar():
+    caminho = caminho_relativo.get().strip()
+    if caminho == "":
+        resultado_label.config(text="Campo não preenchido!", foreground="red")
+        return
+    talhoes = carregar_talhoes(caminho)
+    if talhoes:
+        contagem(talhoes)
+        resultado_label.config(text="Contagem realizada com sucesso!", foreground="green")
+        resultado_label2.config(text="Verifique seus arquivos na barra de arquivos :)", foreground='#e0e0e0')
+    else:
+        resultado_label.config(text="Arquivo não encontrado.", foreground="red")
+
+def main_apagar():
+    caminho = caminho_relativo.get().strip()
+    if caminho == "":
+        resultado_label.config(text="Campo não preenchido!", foreground="red")
+        return
+    talhoes = carregar_talhoes(caminho)  # Carregue os talhões primeiro
+    if talhoes:
+        apagados = apagar_talhoes(talhoes)  # Chame a função e capture o resultado
+        if apagados:
+            contagem(apagados)  # Contagem com os talhões apagados
+            resultado_label.config(text="Talhões apagados com sucesso!", foreground="green")
+            resultado_label2.config(text="Verifique seus arquivos na barra de arquivos :)", foreground='#e0e0e0')
+        else:
+            resultado_label.config(text="Nenhum talhão apagado.", foreground="orange")
+    else:
+        resultado_label.config(text="Arquivo não encontrado.", foreground="red")
 
 root = Tk()
-root.title("Calculadora do Alek")
-root.geometry("320x390")
-cor_main = "#13283d"
+root.title("Contador Rural")
+root.geometry("600x450")  # Ajuste o tamanho da janela conforme necessário
 
-frame_resultado = Frame(root, width=320, height=90, bg=cor_main)
-frame_resultado.grid(row=0, column=0)
 
-corpo = Frame(root, width=320, height=300)
-corpo.grid(row=1, column=0)
+frm = Frame(root, padx=150, pady=250, background="#66cc00", width=800, height=500)
+frm.grid(row=1, column=1, sticky=(N, S, E, W))
 
-# FUNÇÃO VALORES 
+# Carregando a imagem e posicionando-a dentro do frame
+imagem = PhotoImage(file="logo.png")
+label_imagem = Label(frm, image=imagem, background="#66cc00")
+label_imagem.place(x=0,y=0)
 
-valor = ''
+# Mensagem inicio
+label_msg = ttk.Label(frm, text="Olá, Bem-vindo ao CONTADOR RURAL", font=("Cambria", 16), background="#66cc00", foreground='#e0e0e0')
+label_msg.place(x=130,y=10)
+# Label e entry para caminho relativo
+label_msg2 = ttk.Label(frm, text="Preencha o campo abaixo com o caminho relativo do arquivo que deseja contar.", font=("Cambria", 10), background="#66cc00", foreground='#e0e0e0')
+label_msg2.place(x=130,y=40)
+caminho_relativo = Entry(frm, font=("Arial", 10))
+caminho_relativo.place(x=130, y=75)
 
-def on_off():
-    root.quit()
+# Resultado da validação
+resultado_label = ttk.Label(frm, text="", font=("Agrandir", 16), background="#66cc00", foreground='#e0e0e0')
+resultado_label.place(x=20,y=150)
 
-def entrar_valor1(event):
-    global valor
-    valor += str(event)
-    valor_texto.set(valor)
+resultado_label2 = ttk.Label(frm, text="", font=("Agrandir", 16), background="#66cc00", foreground='#e0e0e0')
+resultado_label2.place(x=0,y=200)
 
-def backspace():
-    global valor
-    valor = valor[:-1]
-    valor_texto.set(valor)
+# Botão apagar
+botao_apagar = ttk.Button(frm, text="Apagar", command=main_apagar)
+botao_apagar.place(x=215, y=110)
 
-def calcular():
-    global valor
-    valor = valor.replace("^", "**").replace("÷","/").replace("×","*").replace(",",".")
-    if "%" in valor:
-        while "%" in valor:
-            idx = valor.index("%")
-            left_part = valor[:idx].rstrip()
-            if left_part:
-                if left_part[-1] in "+-*/":
-                    left_part = left_part[:-1]
-                try:
-                    left_value = eval(left_part)
-                except:
-                    left_value = 1 
-                valor = valor[:idx] + f"*{left_value}/100" + valor[idx+1:]
-    if "√" in valor:
-        valor = valor.replace("√", "math.sqrt(") + ")"
-    try:
-        resultado = eval(valor, {"math": math})
-        if isinstance(resultado, float):
-            if resultado.is_integer():
-                resultado = int(resultado)
-        valor_texto.set(resultado)
-        valor = str(resultado)
-    except Exception as e:
-        valor_texto.set("Erro")
-        valor = ''
+# Botão salvar
+botao_salvar = ttk.Button(frm, text="Salvar", command=main_salvar)
+botao_salvar.place(x=115, y=110)
 
-# CALCULADORA
-valor_texto = StringVar()
-conta_label = Label(frame_resultado, textvariable=valor_texto, width=12, height=4, padx=145, relief=FLAT, anchor="e", justify="right", font="Ivy 18", bg=cor_main)
-conta_label.place(x=5, y=20)
-
-# BOTÕES
-# PRIMEIRA SESSÃO
-botao1 = Button(corpo, width=7, height=2, command=lambda: entrar_valor1 ("%"), text="%", font=("Ivy 13 bold"), relief=RAISED, overrelief=RIDGE)
-botao1.place(x=0, y=0)
-
-botao2 = Button(corpo, width=7, height=2, command=lambda: entrar_valor1(""), text="C", font=("Ivy 13 bold"), bg="#ff9933", relief=RAISED, overrelief=RIDGE)
-botao2.place(x=80, y=0)
-
-botao3 = Button(corpo, width=7, height=2, command=lambda: valor_texto.set(''), text="CE", font=("Ivy 13 bold"), relief=RAISED, overrelief=RIDGE)
-botao3.place(x=160, y=0)
-
-botao4 = Button(corpo, width=7, height=2, command=backspace, text="⌦", font=("Ivy 13 bold"), relief=RAISED, overrelief=RIDGE)
-botao4.place(x=240, y=0)
-
-# SEGUNDA SESSÃO
-botao5 = Button(corpo, width=7, height=2, command=lambda: entrar_valor1("√"), text="√", font=("Ivy 13 bold"), relief=RAISED, overrelief=RIDGE)
-botao5.place(x=0, y=51)
-
-botao6 = Button(corpo, width=7, height=2, command=lambda: valor_texto.set(''), text="AC", font=("Ivy 13 bold"), bg="#ff9933", relief=RAISED, overrelief=RIDGE)
-botao6.place(x=80, y=51)
-
-botao7 = Button(corpo, width=7, height=2, command=lambda: entrar_valor1("^"), text="^", font=("Ivy 13 bold"), relief=RAISED, overrelief=RIDGE)
-botao7.place(x=160, y=51)
-
-botao8 = Button(corpo, width=7, height=2, command=lambda: entrar_valor1("÷"), text="÷", font=("Ivy 13 bold"), relief=RAISED, overrelief=RIDGE)
-botao8.place(x=240, y=51)
-
-# TERCEIRA SESSÃO
-botao9 = Button(corpo, width=7, height=2, command=lambda: entrar_valor1("7"), text="7", font=("Ivy 13 bold"), relief=RAISED, overrelief=RIDGE)
-botao9.place(x=0, y=102)
-
-botao10 = Button(corpo, width=7, height=2, command=lambda: entrar_valor1("8"), text="8", font=("Ivy 13 bold"), relief=RAISED, overrelief=RIDGE)
-botao10.place(x=80, y=102)
-
-botao11 = Button(corpo, width=7, height=2, command=lambda: entrar_valor1("9"), text="9", font=("Ivy 13 bold"), relief=RAISED, overrelief=RIDGE)
-botao11.place(x=160, y=102)
-
-botao12 = Button(corpo, width=7, height=2, command=lambda: entrar_valor1("×"), text="×", font=("Ivy 13 bold"), relief=RAISED, overrelief=RIDGE)
-botao12.place(x=240, y=102)
-
-# QUARTA SESSÃO
-botao13 = Button(corpo, width=7, height=2, command=lambda: entrar_valor1("4"), text="4", font=("Ivy 13 bold"), relief=RAISED, overrelief=RIDGE)
-botao13.place(x=0, y=153)
-
-botao14 = Button(corpo, width=7, height=2, command=lambda: entrar_valor1("5"), text="5", font=("Ivy 13 bold"), relief=RAISED, overrelief=RIDGE)
-botao14.place(x=80, y=153)
-
-botao15 = Button(corpo, width=7, height=2, command=lambda: entrar_valor1("6"), text="6", font=("Ivy 13 bold"), relief=RAISED, overrelief=RIDGE)
-botao15.place(x=160, y=153)
-
-botao16 = Button(corpo, width=7, height=2, command=lambda: entrar_valor1("-"), text="-", font=("Ivy 13 bold"), relief=RAISED, overrelief=RIDGE)
-botao16.place(x=240, y=153)
-
-# QUINTA SESSÃO
-botao17 = Button(corpo, width=7, height=2, command=lambda: entrar_valor1("1"), text="1", font=("Ivy 13 bold"), relief=RAISED, overrelief=RIDGE)
-botao17.place(x=0, y=204)
-
-botao18 = Button(corpo, width=7, height=2, command=lambda: entrar_valor1("2"), text="2", font=("Ivy 13 bold"), relief=RAISED, overrelief=RIDGE)
-botao18.place(x=80, y=204)
-
-botao19 = Button(corpo, width=7, height=2, command=lambda: entrar_valor1("3"), text="3", font=("Ivy 13 bold"), relief=RAISED, overrelief=RIDGE)
-botao19.place(x=160, y=204)
-
-botao20 = Button(corpo, width=7, height=2, command=lambda: entrar_valor1("+"), text="+", font=("Ivy 13 bold"), relief=RAISED, overrelief=RIDGE)
-botao20.place(x=240, y=204)
-
-# SEXTA SESSÃO
-botao21 = Button(corpo, width=7, height=2, command=lambda: entrar_valor1("0"), text="0", font=("Ivy 13 bold"), relief=RAISED, overrelief=RIDGE)
-botao21.place(x=0, y=256)
-
-botao22 = Button(corpo, width=7, height=2, command=lambda: entrar_valor1("00"), text="00", font=("Ivy 13 bold"), relief=RAISED, overrelief=RIDGE)
-botao22.place(x=80, y=256)
-
-botao23= Button(corpo,width=7,height=2,command= lambda: entrar_valor1 (","),text="‚",font=("Ivy 13 bold"),relief=RAISED,overrelief=RIDGE)
-botao23.place(x=160,y=256)
-
-botao24= Button(corpo,width=7,height=2,command= calcular,text="=",font=("Ivy 13 bold"),bg=cor_main,foreground="WHITE",relief=RAISED,overrelief=RIDGE)
-botao24.place(x=240,y=256)
-
+# Inicia o loop principal da interface gráfica
 root.mainloop()
+
