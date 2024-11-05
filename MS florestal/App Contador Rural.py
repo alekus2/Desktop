@@ -104,7 +104,7 @@ frm_img.grid(row=0, column=0,sticky=(W))
 # Carregando a imagem e posicionando-a dentro do frame
 imagem = PhotoImage(file="logo.png")
 label_imagem = Label(frm_img, image=imagem, background="#ffffff")
-label_imagem.grid(row=0,column=0,sticky=(W))
+label_imagem.grid (row=1,column=0)
 
 # Ajuste a posição do texto para que ele fique sobre a imagem
 label_msg = ttk.Label(frm, text="Olá, Bem-vindo ao CONTADOR RURAL", font=("Cambria", 16), background="#66cc00", foreground='#e0e0e0')
