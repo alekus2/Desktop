@@ -29,14 +29,13 @@ def carregar_talhoes(arquivo):
 
 def contagem(talhoes):
     novos_talhoes = {} 
-    for talhao, parcelas_talho in talhoes.items():
-        if talhao % 2 == 0:
-            if parcelas_talho < 3:
-                parcela_nova = parcelas_talho
-            elif parcelas_talho % 2 == 0:
-                parcela_nova = parcelas_talho // 2
+    for talhao, parcelas in talhoes.items():
+            if parcelas < 3:
+                parcela_nova = parcelas
+            elif parcelas % 2 == 0:
+                parcela_nova = parcelas // 2
             else:
-                parcela_nova = (parcelas_talho + 1) // 2
+                parcela_nova = (parcelas + 1) // 2
             
             novos_talhoes[talhao] = parcela_nova
 
@@ -46,13 +45,20 @@ def contagem(talhoes):
         for talhao, parcelas in novos_talhoes.items():
             spamwriter.writerow([talhao, parcelas]) 
 
-def apagar_talhoes(talhoes):
-    apagador_talhoes = {}
+def apagar_parcelas(talhoes):
+    apagador_parcelas = {}
     for talhao, parcelas in talhoes.items():
         if parcelas % 2 > 0:
-         continue
-        apagador_talhoes[parcelas] = parcelas
-    return apagador_talhoes 
+            print (parcelas)
+        else:
+            if parcelas < 3:
+                parcelas_novas = parcelas
+            if parcelas % 2 == 0:
+                parcelas_novas = parcelas // 2
+            else:
+                parcelas_novas = (parcelas + 1) // 2   
+            apagador_parcelas[talhao] = parcelas_novas
+    return apagador_parcelas
 
 def main_salvar():
     caminho = caminho_relativo.get().strip()
@@ -62,6 +68,7 @@ def main_salvar():
     talhoes = carregar_talhoes(caminho)
     if talhoes:
         contagem(talhoes)
+
         resultado_label.config(text="Contagem realizada com sucesso!", foreground="green")
         resultado_label2.config(text="Verifique seus arquivos na barra de arquivos :)", foreground='#e0e0e0')
     else:
@@ -74,9 +81,8 @@ def main_apagar():
         return
     talhoes = carregar_talhoes(caminho)  # Carregue os talhões primeiro
     if talhoes:
-        apagados = apagar_talhoes(talhoes)  # Chame a função e capture o resultado
+        apagados = apagar_parcelas(talhoes)  # Chame a função e capture o resultado
         if apagados:
-            contagem(apagados)  # Contagem com os talhões apagados
             resultado_label.config(text="Talhões apagados com sucesso!", foreground="green")
             resultado_label2.config(text="Verifique seus arquivos na barra de arquivos :)", foreground='#e0e0e0')
         else:
