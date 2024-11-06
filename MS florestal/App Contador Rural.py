@@ -48,15 +48,10 @@ def contagem(talhoes):
 
 def apagar_talhoes(talhoes):
     apagador_talhoes = {}
-    for talhao, parcelas_talho in talhoes.items():
-        if talhao % 2 >= 1:
-            if parcelas_talho < 3:
-                parcelas_novas = parcelas_talho
-            elif parcelas_talho % 2 == 0:
-                parcelas_novas = parcelas_talho // 2
-            else:
-                parcelas_novas = (parcelas_talho + 1) // 2
-            apagador_talhoes[talhao] = parcelas_novas
+    for talhao, parcelas in talhoes.items():
+        if parcelas % 2 > 0:
+         continue
+        apagador_talhoes[parcelas] = parcelas
     return apagador_talhoes 
 
 def main_salvar():
@@ -67,7 +62,6 @@ def main_salvar():
     talhoes = carregar_talhoes(caminho)
     if talhoes:
         contagem(talhoes)
-        resultado_label.config(x=+(-50))
         resultado_label.config(text="Contagem realizada com sucesso!", foreground="green")
         resultado_label2.config(text="Verifique seus arquivos na barra de arquivos :)", foreground='#e0e0e0')
     else:
