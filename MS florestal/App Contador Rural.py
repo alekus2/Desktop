@@ -48,9 +48,7 @@ def contagem(talhoes):
 def apagar_parcelas(talhoes):
     apagador_parcelas = {}
     for talhao, parcelas in talhoes.items():
-        if parcelas % 2 > 0:
-            print (parcelas)
-        else:
+        if parcelas % 2 != 0:
             if parcelas < 3:
                 parcelas_novas = parcelas
             if parcelas % 2 == 0:
@@ -58,8 +56,12 @@ def apagar_parcelas(talhoes):
             else:
                 parcelas_novas = (parcelas + 1) // 2   
             apagador_parcelas[talhao] = parcelas_novas
-    return apagador_parcelas
-
+    with open('Talhão_atualizado.csv', 'w', newline='') as csvfile:
+        spamwriter = csv.writer(csvfile, delimiter=';', quoting=csv.QUOTE_MINIMAL)
+        spamwriter.writerow(['Talhao', 'Parcelas Atualizadas'])
+        for talhao, parcelas in parcelas_novas.items():
+            spamwriter.writerow([talhao, parcelas])        
+            
 def main_salvar():
     caminho = caminho_relativo.get().strip()
     if caminho == "":
@@ -86,7 +88,7 @@ def main_apagar():
             resultado_label.config(text="Talhões apagados com sucesso!", foreground="green")
             resultado_label2.config(text="Verifique seus arquivos na barra de arquivos :)", foreground='#e0e0e0')
         else:
-            resultado_label.config(text="Nenhum talhão apagado.", foreground="orange")
+            resultado_label.config(text="Erro...", foreground="orange")
     else:
         resultado_label.config(text="Arquivo não encontrado.", foreground="red")
 
