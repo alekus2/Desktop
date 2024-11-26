@@ -43,23 +43,23 @@ def contagem(talhoes):
         spamwriter.writerow(['Talhao', 'Parcelas Atualizadas'])
         for talhao, parcelas in novos_talhoes.items():
             spamwriter.writerow([talhao, parcelas]) 
-
+     
 def apagar_parcelas(talhoes):
     apagador_parcelas = {}
     for talhao, parcelas in talhoes.items():
-        if parcelas % 2 > 0:
-            parcelas_novas == parcelas
-            if parcelas < 3:
+        if parcelas % 2 == 0 and parcelas < 3:
                 parcelas_novas = parcelas
-            else:
-                if parcelas % 2 == 0:
-                    parcelas_novas = parcelas // 2  
-            apagador_parcelas[talhao] = parcelas_novas
+        if parcelas % 2 == 0 and parcelas > 3:
+            parcelas_novas = parcelas // 2
+        else:
+          continue  
+        apagador_parcelas[talhao] = parcelas_novas
     with open('Talhão_atualizado.csv', 'w', newline='') as csvfile:
         spamwriter = csv.writer(csvfile, delimiter=';', quoting=csv.QUOTE_MINIMAL)
-        spamwriter.writerow(['Talhao', 'Parcelas Atualizadas'])
+        spamwriter.writerow(['Talhao', 'Parcelas Atualizadas','Batata Doce']) #Dependendo do arquivo, alterar colunas aqui!
         for talhao, parcelas in apagador_parcelas.items():
-            spamwriter.writerow([talhao, parcelas])         
+            spamwriter.writerow([talhao, parcelas])      
+    return apagar_parcelas           
 def main_salvar():
     caminho = caminho_relativo.get().strip()
     if caminho == "":
