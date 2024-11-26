@@ -1,7 +1,6 @@
 from tkinter import *
 from tkinter import ttk
 import csv
-import tkinter as tk
 
 def carregar_talhoes(arquivo):
     talhoes = {}
@@ -48,20 +47,19 @@ def contagem(talhoes):
 def apagar_parcelas(talhoes):
     apagador_parcelas = {}
     for talhao, parcelas in talhoes.items():
-        if parcelas % 2 != 0:
+        if parcelas % 2 > 0:
+            parcelas_novas == parcelas
             if parcelas < 3:
                 parcelas_novas = parcelas
-            if parcelas % 2 == 0:
-                parcelas_novas = parcelas // 2
             else:
-                parcelas_novas = (parcelas + 1) // 2   
+                if parcelas % 2 == 0:
+                    parcelas_novas = parcelas // 2  
             apagador_parcelas[talhao] = parcelas_novas
     with open('Talhão_atualizado.csv', 'w', newline='') as csvfile:
         spamwriter = csv.writer(csvfile, delimiter=';', quoting=csv.QUOTE_MINIMAL)
         spamwriter.writerow(['Talhao', 'Parcelas Atualizadas'])
-        for talhao, parcelas in parcelas_novas.items():
-            spamwriter.writerow([talhao, parcelas])        
-            
+        for talhao, parcelas in apagador_parcelas.items():
+            spamwriter.writerow([talhao, parcelas])         
 def main_salvar():
     caminho = caminho_relativo.get().strip()
     if caminho == "":
@@ -81,20 +79,20 @@ def main_apagar():
     if caminho == "":
         resultado_label.config(text="Campo não preenchido!", foreground="red")
         return
-    talhoes = carregar_talhoes(caminho)  # Carregue os talhões primeiro
+    talhoes = carregar_talhoes(caminho) 
     if talhoes:
-        apagados = apagar_parcelas(talhoes)  # Chame a função e capture o resultado
+        apagados = apagar_parcelas(talhoes)
         if apagados:
             resultado_label.config(text="Talhões apagados com sucesso!", foreground="green")
             resultado_label2.config(text="Verifique seus arquivos na barra de arquivos :)", foreground='#e0e0e0')
         else:
-            resultado_label.config(text="Erro...", foreground="orange")
+            resultado_label.config(text="Nenhum talhão apagado.", foreground="orange")
     else:
         resultado_label.config(text="Arquivo não encontrado.", foreground="red")
 
 root = Tk()
 root.title("Contador Rural")
-root.geometry("650x450")  # Ajuste o tamanho da janela conforme necessário
+root.geometry("650x450") 
 
 
 frm = Frame(root, padx=0, pady=100, background="#66cc00", width=200, height=500)
@@ -103,22 +101,21 @@ frm.grid(row=1, column=0, sticky=(N, S, E, W))
 frm_img =Frame(root,padx=100,pady=7,background="#ffffff",width=500,height=150)
 frm_img.grid(row=0, column=0,sticky=(W))
 
-# Carregando a imagem e posicionando-a dentro do frame
 imagem = PhotoImage(file="logo.png")
 label_imagem = Label(frm_img, image=imagem, background="#ffffff")
 label_imagem.grid (row=1,column=0)
 
-# Ajuste a posição do texto para que ele fique sobre a imagem
+
 label_msg = ttk.Label(frm, text="Olá, Bem-vindo ao CONTADOR RURAL", font=("Cambria", 16), background="#66cc00", foreground='#e0e0e0')
-label_msg.place(x=140,y=0)  # Ajuste as coordenadas conforme necessário
+label_msg.place(x=140,y=0) 
 
 label_msg2 = ttk.Label(frm, text="Preencha o campo abaixo com o caminho relativo do arquivo que deseja contar.", font=("Cambria", 10), background="#66cc00", foreground='#e0e0e0')
-label_msg2.place(x=110,y=40)  # Ajuste as coordenadas conforme necessário
+label_msg2.place(x=110,y=40)  
 
 caminho_relativo = Entry(frm, font=("Arial", 10))
 caminho_relativo.place(x=240, y=80)
 
-# Resultado da validação
+
 resultado_label = ttk.Label(frm, text="", font=("Agrandir", 16), background="#66cc00", foreground='#e0e0e0')
 resultado_label.place(x=220,y=150)
 
@@ -133,6 +130,5 @@ botao_apagar.place(x=325, y=110)
 botao_salvar = ttk.Button(frm, text="Salvar", command=main_salvar)
 botao_salvar.place(x=225, y=110)
 
-# Inicia o loop principal da interface gráfica
 root.mainloop()
 
