@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import ttk
 import csv
+import pandas as pd
 
 def carregar_talhoes(arquivo):
     talhoes = {}
@@ -27,20 +28,21 @@ def carregar_talhoes(arquivo):
     return talhoes
 
 def contagem(talhoes):
-    novos_talhoes = {} 
+    novos_talhoes = pd.DataFrame ({})
+
     for talhao, parcelas in talhoes.items():
-            if parcelas < 3:
-                parcela_nova = parcelas
-            elif parcelas % 2 == 0:
-                parcela_nova = parcelas // 2
-            else:
-                parcela_nova = (parcelas + 1) // 2
-            novos_talhoes[talhao] = parcela_nova
-    with open('Talhão_atualizado.csv', 'w', newline='') as csvfile: #Formatar novo arquivo em formato csv
-        spamwriter = csv.writer(csvfile, delimiter=';', quoting=csv.QUOTE_MINIMAL)
-        spamwriter.writerow(['Talhao', 'Parcelas Atualizadas']) #Dependendo do arquivo, alterar colunas aqui!
-        for talhao, parcelas in novos_talhoes.items():
-            spamwriter.writerow([talhao, parcelas]) 
+        if parcelas < 3:
+            parcela_nova = parcelas
+        elif parcelas % 2 == 0:
+            parcela_nova = parcelas // 2
+        else:
+            parcela_nova = (parcelas + 1) // 2
+
+        novos_talhoes[talhao] = [parcela_nova] 
+    novos_talhoes = novos_talhoes.T  
+    novos_talhoes.columns = ['Parcelas Atualizadas']  
+    novos_talhoes.to_excel('Talhão_atualizado.xlsx', index_label='Talhão') 
+
 def apagar_parcelas(talhoes):
     apagador_parcelas = {}
     for talhao, parcelas in talhoes.items():
@@ -51,13 +53,11 @@ def apagar_parcelas(talhoes):
         else:
             continue
         apagador_parcelas[talhao] = parcela_nova
-    with open('Talhão_atualizado.csv', 'w', newline='') as csvfile:
-        spamwriter = csv.writer(csvfile, delimiter=';', quoting=csv.QUOTE_MINIMAL)
-        spamwriter.writerow(['Talhao', 'Parcelas Atualizadas'])
-        for talhao, parcelas in apagador_parcelas.items():
-            spamwriter.writerow([talhao, parcelas])      
 
+    apagador_parcelas_df = pd.DataFrame(list(apagador_parcelas.items()), columns=['Talhão', 'Parcelas Atualizadas'])
+    apagador_parcelas_df.to_excel('Talhão_atualizado.xlsx', index=False)
     return apagador_parcelas
+
 
 def main_salvar():
     caminho = caminho_relativo.get().strip()
