@@ -1,15 +1,9 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-
-
-
-
-
 x = np.linspace(0, 2 * np.pi, 100)  
 f = np.sin(x) 
 g = np.cos(x)  
-
 
 plt.figure(figsize=(10,7))
 plt.plot(x, f, linewidth=5, label='sin(x)')  
