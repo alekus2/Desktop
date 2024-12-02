@@ -1,8 +1,3 @@
-from tkinter import *
-from tkinter import ttk
-import pandas as pd
-import os
-
 def carregar_talhoes(arquivo):
     talhoes = []
     try:
@@ -73,68 +68,42 @@ def apagar_parcelas(talhoes, arquivo_original):
         print(f"Erro ao salvar o arquivo: {e}")
     return novo_arquivo
 
-def main_salvar():
-    caminho = caminho_relativo.get().strip()
-    if caminho == "":
-        resultado_label.config(text="Campo não preenchido!", foreground="red")
-        return
-    talhoes = carregar_talhoes(caminho)
-    if talhoes:
-        novo_arquivo = contagem(talhoes, caminho)
-        resultado_label.config(text="Contagem realizada com sucesso!", foreground="green")
-        resultado_label2.config(text=f"Arquivo salvo como: {novo_arquivo}", foreground='#e0e0e0')
-    else:
-        resultado_label.config(text="Arquivo não encontrado.", foreground="red")
+#output:
 
-def main_apagar():
-    caminho = caminho_relativo.get().strip()
-    if caminho == "":
-        resultado_label.config(text="Campo não preenchido!", foreground="red")
-        return
-    talhoes = carregar_talhoes(caminho) 
-    if talhoes:
-        novo_arquivo = apagar_parcelas(talhoes, caminho)
-        resultado_label.config(text="Talhões apagados com sucesso!", foreground="green")
-        resultado_label2.config(text=f"Arquivo salvo como: {novo_arquivo}", foreground='#e0e0e0')
-    else:
-        resultado_label.config(text="Nenhum talhão apagado.", foreground="orange")
+   ID_PROJETO CD_TALHAO    INDEX  nm_parcela TIPO_INSTA TIPO_ATUAL  Mes_Prog
+0        6219         6  6219006           1    30 dias    30 dias  Novembro
+1        6219         6  6219006           2    30 dias    30 dias  Novembro
+2        6219         6  6219006           3    30 dias    30 dias  Novembro
+3        6219         6  6219006           4    30 dias    30 dias  Novembro
+4        6219         6  6219006           5    30 dias    30 dias  Novembro
 
-root = Tk()
-root.title("Contador Rural")
-root.geometry("650x450") 
+#como deveria mudar:
 
-frm = Frame(root, padx=0, pady=100, background="#66cc00", width=200, height=500)
-frm.grid(row=1, column=0, sticky=(N, S, E, W))
+Talhão 6 | Parcela original: 1 | Parcela modificada para: 1
+Talhão 6 | Parcela original: 2 | Parcela modificada para: 2
+Talhão 6 | Parcela original: 3 | Parcela modificada para: 3
+Talhão 6 | Parcela original: 4 | Parcela modificada para: 2
+Talhão 6 | Parcela original: 6 | Parcela modificada para: 3
+Talhão 6 | Parcela original: 8 | Parcela modificada para: 4
+...            ....                    .....
+Talhão 20 | Parcela original: 8 | Parcela modificada para: 4
+Talhão 20 | Parcela original: 10 | Parcela modificada para: 5
+Talhão 20 | Parcela original: 12 | Parcela modificada para: 6
+Talhão 20 | Parcela original: 14 | Parcela modificada para: 7
+Talhão 20 | Parcela original: 16 | Parcela modificada para: 8
 
-frm_img = Frame(root, padx=100, pady=7, background="#ffffff", width=500, height=150)
-frm_img.grid(row=0, column=0, sticky=(W))
+#nao mudou nada
 
-imagem = PhotoImage(file="logo.png")
-label_imagem = Label(frm_img, image=imagem, background="#ffffff")
-label_imagem.grid(row=1, column=0)
-
-label_msg = ttk.Label(frm, text="Olá, Bem-vindo ao CONTADOR RURAL", font=("Cambria", 16), background="#66cc00", foreground='#e0e0e0')
-label_msg.place(x=140, y=0) 
-
-label_msg2 = ttk.Label(frm, text="Preencha o campo abaixo com o caminho relativo do arquivo que deseja contar.", font=("Cambria", 10), background="#66cc00", foreground='#e0e0e0')
-label_msg2.place(x=110, y=40)  
-
-caminho_relativo = Entry(frm, font=("Arial", 10))
-caminho_relativo.place(x=240, y=80)
-
-resultado_label = ttk.Label(frm, text="", font=("Agrandir", 16), background="#66cc00", foreground='#e0e0e0')
-resultado_label.place(x=220, y=150)
-
-resultado_label2 = ttk.Label(frm, text="", font=("Agrandir", 16), background="#66cc00", foreground='#e0e0e0')
-resultado_label2.place(x=130, y=200)
-
-# Botão apagar
-botao_apagar = ttk.Button(frm, text="Apagar", command=main_apagar)
-botao_apagar.place(x=325, y=110)
-
-# Botão salvar
-botao_salvar = ttk.Button(frm, text="Salvar", command=main_salvar)
-botao_salvar.place(x=225, y=110)
-
-root.mainloop()
-
+DataFrame após modificações:
+<bound method DataFrame.all of      ID_PROJETO  CD_TALHAO    INDEX  nm_parcela TIPO_INSTA TIPO_ATUAL  Mes_Prog
+0          6219          6  6219006           1    30 dias    30 dias  Novembro
+1          6219          6  6219006           2    30 dias    30 dias  Novembro
+2          6219          6  6219006           3    30 dias    30 dias  Novembro
+3          6219          6  6219006           4    30 dias    30 dias  Novembro
+4          6219          6  6219006           5    30 dias    30 dias  Novembro
+..          ...        ...      ...         ...        ...        ...       ...
+360        6436         20  6436020          13    30 dias    30 dias  Novembro
+361        6436         20  6436020          14    30 dias    30 dias  Novembro
+362        6436         20  6436020          15    30 dias    30 dias  Novembro
+363        6436         20  6436020          16    30 dias    30 dias  Novembro
+364        6436         20  6436020          17    30 dias    30 dias  Novembro
