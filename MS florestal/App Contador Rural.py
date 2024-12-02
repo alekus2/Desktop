@@ -27,19 +27,19 @@ def carregar_talhoes(arquivo):
     return []
 
 def contagem(talhoes, arquivo_original):
-    df = pd.read_csv(arquivo_original, delimiter=";") 
+    df = pd.read_csv(arquivo_original, delimiter=";")
+    if 'nm_parcela_atualizada' not in df.columns:
+        df['nm_parcela_atualizada'] = None  # Inicializa com valores None
     for talhao_dict in talhoes:
         talhao = talhao_dict['CD_TALHAO']
         nm_parcela = talhao_dict['nm_parcela']
-        nm_parcela=[]
-    if nm_parcela < 3:
+        if nm_parcela < 3:
             parcela_nova = nm_parcela
-    elif nm_parcela % 2 == 0:
+        elif nm_parcela % 2 == 0:
             parcela_nova = nm_parcela // 2
-    else:
+        else:
             parcela_nova = (nm_parcela + 1) // 2
-    if df.loc[df['CD_TALHAO'] == talhao, 'nm_parcela'] != parcela_nova:
-            df.loc[df['CD_TALHAO'] == talhao, 'nm_parcela'] = parcela_nova
+        df.loc[df['CD_TALHAO'] == talhao, 'nm_parcela_atualizada'] = parcela_nova
     nome_arquivo = os.path.splitext(arquivo_original)[0]
     novo_arquivo = f"{nome_arquivo}_atualizado.xlsx"
     try:
@@ -47,28 +47,29 @@ def contagem(talhoes, arquivo_original):
         print(f"Arquivo salvo como: {novo_arquivo}")
     except Exception as e:
         print(f"Erro ao salvar o arquivo: {e}")
+    
     return novo_arquivo
 
 def apagar_parcelas(talhoes, arquivo_original):
-    df = pd.read_csv(arquivo_original, delimiter=";") 
-    parcelas_novas=[]
+    df = pd.read_csv(arquivo_original, delimiter=";")
+    df['CD_TALHAO'] = df['CD_TALHAO'].astype(str)  # Garantir que 'CD_TALHAO' seja string
+    df['nm_parcela'] = pd.to_numeric(df['nm_parcela'], errors='coerce')  # Garantir que 'nm_parcela' seja numérica
+    if 'nm_parcela_atualizada' not in df.columns:
+        df['nm_parcela_atualizada'] = None  # Inicializa com valores None
     for talhao_dict in talhoes:
         talhao = talhao_dict['CD_TALHAO']
         nm_parcela = talhao_dict['nm_parcela']
-        if talhao_dict== False:
-             nm_parcela=[]
-    for x in nm_parcela:   
-    if nm_parcela <= 3:
+        print(f"Processando talhão: {talhao}, parcela: {nm_parcela}")  # Debug para verificar valores
+        if nm_parcela <= 3:
             parcela_nova = nm_parcela
-    elif nm_parcela % 2 == 0 and nm_parcela > 3:
-        parcela_nova = nm_parcela // 2
-    else:
-            parcela_nova = (nm_parcela + 1) // 2  
-    df.loc[(df['CD_TALHAO'] == talhao) & (df['nm_parcela'] == nm_parcela), 'nm_parcela_atualizada'] = parcela_nova
-    parcelas_novas.append(parcela_nova)
-    df["nm_parcela_atualizada"]=parcelas_novas
-    print(f"Parcela original: {nm_parcela} | Parcela modificada para: {parcela_nova}")
-    print(f"DataFrame após modificações:\n{df}")
+        elif nm_parcela % 2 == 0:
+            parcela_nova = nm_parcela // 2
+        else:
+            parcela_nova = (nm_parcela + 1) // 2
+        print(f"Atualizando talhão {talhao} para parcela {nm_parcela} com nova parcela {parcela_nova}")  # Debug
+        df.loc[(df['CD_TALHAO'] == talhao) & (df['nm_parcela'] == nm_parcela), 'nm_parcela_atualizada'] = parcela_nova
+    print("DataFrame após as modificações:")
+    print(df[['CD_TALHAO', 'nm_parcela', 'nm_parcela_atualizada']].head(10))
     nome_arquivo = os.path.splitext(arquivo_original)[0]
     novo_arquivo = f"{nome_arquivo}_atualizado.xlsx"
     try:
@@ -114,7 +115,7 @@ frm.grid(row=1, column=0, sticky=(N, S, E, W))
 frm_img = Frame(root, padx=100, pady=7, background="#ffffff", width=500, height=150)
 frm_img.grid(row=0, column=0, sticky=(W))
 
-imagem = PhotoImage(file="logo.png")
+imagem = PhotoImage(file="MS florestal\logo.png")
 label_imagem = Label(frm_img, image=imagem, background="#ffffff")
 label_imagem.grid(row=1, column=0)
 
@@ -142,4 +143,3 @@ botao_salvar = ttk.Button(frm, text="Salvar", command=main_salvar)
 botao_salvar.place(x=225, y=110)
 
 root.mainloop()
-
