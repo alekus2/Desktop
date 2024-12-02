@@ -31,13 +31,14 @@ def contagem(talhoes, arquivo_original):
     for talhao_dict in talhoes:
         talhao = talhao_dict['CD_TALHAO']
         nm_parcela = talhao_dict['nm_parcela']
-        if nm_parcela < 3:
+        nm_parcela=[]
+    if nm_parcela < 3:
             parcela_nova = nm_parcela
-        elif nm_parcela % 2 == 0:
+    elif nm_parcela % 2 == 0:
             parcela_nova = nm_parcela // 2
-        else:
+    else:
             parcela_nova = (nm_parcela + 1) // 2
-        if df.loc[df['CD_TALHAO'] == talhao, 'nm_parcela'] != parcela_nova:
+    if df.loc[df['CD_TALHAO'] == talhao, 'nm_parcela'] != parcela_nova:
             df.loc[df['CD_TALHAO'] == talhao, 'nm_parcela'] = parcela_nova
     nome_arquivo = os.path.splitext(arquivo_original)[0]
     novo_arquivo = f"{nome_arquivo}_atualizado.xlsx"
@@ -49,23 +50,24 @@ def contagem(talhoes, arquivo_original):
     return novo_arquivo
 
 def apagar_parcelas(talhoes, arquivo_original):
-    df = pd.read_csv(arquivo_original, delimiter=";")
-    x=0
+    df = pd.read_csv(arquivo_original, delimiter=";") 
+    parcelas_novas=[]
     for talhao_dict in talhoes:
         talhao = talhao_dict['CD_TALHAO']
         nm_parcela = talhao_dict['nm_parcela']
-        if nm_parcela <= 3:
+        if talhao_dict== False:
+             nm_parcela=[]
+    for x in nm_parcela:   
+    if nm_parcela <= 3:
             parcela_nova = nm_parcela
-        elif nm_parcela % 2 == 0 and nm_parcela > 3:
-            parcela_nova = nm_parcela // 2
-        else:
-            continue
-        df.loc[(df['CD_TALHAO'] == talhao) & (df['nm_parcela'] == parcela_nova), 'nm_parcela'] = nm_parcela
-        print(f"Parcela original: {nm_parcela} | Parcela modificada para: {parcela_nova}") 
-        df.insert(7,'nm_parcela_AT',True) 
-        while x!=365:
-            df["nm_parcela_AT"]==parcela_nova
-            x+=1
+    elif nm_parcela % 2 == 0 and nm_parcela > 3:
+        parcela_nova = nm_parcela // 2
+    else:
+            parcela_nova = (nm_parcela + 1) // 2  
+    df.loc[(df['CD_TALHAO'] == talhao) & (df['nm_parcela'] == nm_parcela), 'nm_parcela_atualizada'] = parcela_nova
+    parcelas_novas.append(parcela_nova)
+    df["nm_parcela_atualizada"]=parcelas_novas
+    print(f"Parcela original: {nm_parcela} | Parcela modificada para: {parcela_nova}")
     print(f"DataFrame após modificações:\n{df}")
     nome_arquivo = os.path.splitext(arquivo_original)[0]
     novo_arquivo = f"{nome_arquivo}_atualizado.xlsx"
@@ -75,6 +77,7 @@ def apagar_parcelas(talhoes, arquivo_original):
     except Exception as e:
         print(f"Erro ao salvar o arquivo: {e}")
     return novo_arquivo
+
 def main_salvar():
     caminho = caminho_relativo.get().strip()
     if caminho == "":
