@@ -42,7 +42,7 @@ def contagem(talhoes, arquivo_original):
     nome_arquivo = os.path.splitext(arquivo_original)[0]
     novo_arquivo = f"{nome_arquivo}_atualizado.xlsx"
     try:
-        df.to_excel(novo_arquivo, index=False, engine='openpyxl')
+        df.to_excel(novo_arquivo, index=False)
         print(f"Arquivo salvo como: {novo_arquivo}")
     except Exception as e:
         print(f"Erro ao salvar o arquivo: {e}")
@@ -50,6 +50,7 @@ def contagem(talhoes, arquivo_original):
 
 def apagar_parcelas(talhoes, arquivo_original):
     df = pd.read_csv(arquivo_original, delimiter=";")
+    x=0
     for talhao_dict in talhoes:
         talhao = talhao_dict['CD_TALHAO']
         nm_parcela = talhao_dict['nm_parcela']
@@ -59,20 +60,21 @@ def apagar_parcelas(talhoes, arquivo_original):
             parcela_nova = nm_parcela // 2
         else:
             continue
-        if df.loc[df['CD_TALHAO'] == talhao, ['nm_parcela'] == nm_parcela].all != parcela_nova:
-            ndf=pd.DataFrame
-            ndf=df.loc[df['CD_TALHAO'] == talhao, ['nm_parcela'] == parcela_nova]
-        print(f"Talhão {talhao} | Parcela original: {nm_parcela} | Parcela modificada para: {parcela_nova}")
-    print(f"DataFrame após modificações:\n{df.all}")
+        df.loc[(df['CD_TALHAO'] == talhao) & (df['nm_parcela'] == parcela_nova), 'nm_parcela'] = nm_parcela
+        print(f"Parcela original: {nm_parcela} | Parcela modificada para: {parcela_nova}") 
+        df.insert(7,'nm_parcela_AT',True) 
+        while x!=365:
+            df["nm_parcela_AT"]==parcela_nova
+            x+=1
+    print(f"DataFrame após modificações:\n{df}")
     nome_arquivo = os.path.splitext(arquivo_original)[0]
     novo_arquivo = f"{nome_arquivo}_atualizado.xlsx"
     try:
-        ndf.to_excel(novo_arquivo, index=False, engine='openpyxl')
+        df.to_excel(novo_arquivo, index=False)
         print(f"Arquivo salvo com sucesso como: {novo_arquivo}")
     except Exception as e:
         print(f"Erro ao salvar o arquivo: {e}")
     return novo_arquivo
-
 def main_salvar():
     caminho = caminho_relativo.get().strip()
     if caminho == "":
