@@ -1,11 +1,8 @@
 
 # In[1]:
-import arcgis
 from arcgis.gis import GIS
 import os, re, csv
 import pandas as pd
-
-
 
 # In[2]:
 # Define variables
@@ -20,7 +17,6 @@ store_csv_w_attachments = True
 gis = GIS(portalURL, username, password)
 survey_by_id = gis.content.get(survey_item_id)
 
-
 # In[2]:
 rel_fs = survey_by_id.related_items('Survey2Service','forward')[0]
 item_excel = rel_fs.export(title=survey_by_id.title, export_format='Excel')
@@ -34,7 +30,6 @@ base_survey = pd.read_excel(url_base_survey)
 
 # In[3]:
 layers = rel_fs.layers + rel_fs.tables
-
 
 # In[4]
 for i in layers:
@@ -60,7 +55,7 @@ for i in layers:
                         attachment_id = current_oid_attachments[k]['id']
                         current_attachment_path = i.attachments.download(oid=current_oid, attachment_id=attachment_id, save_path=feature_layer_folder)
                         csvwriter.writerow([current_oid, os.path.join('{}_attachments'.format(re.sub(r'[^A-Za-z0-9]+', '', i.properties.name)), os.path.split(current_attachment_path[0])[1])])
-            
+                    
 
 
 # %%
