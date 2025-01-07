@@ -1,3 +1,13 @@
+
+# In[2]
+url_base_survey = r'F:\Planejamento_e_Controle\Controles Administrativos\1. MS_MSFC FLORESTAL\05 - Compartilhada\12 - Qualidade\00 - Arquivos Survey\QLD_laudo_de_qualidade_de_mudas_em_expedicao.xlsx'
+
+# Verifique se o arquivo existe antes de tentar ler
+if os.path.exists(url_base_survey):
+    base_survey = pd.read_excel(url_base_survey)
+else:
+    print(f"O arquivo não foi encontrado: {url_base_survey}")
+
 # In[4]
 for i in layers:
     if i.properties.hasAttachments == True:
