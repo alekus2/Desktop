@@ -1,0 +1,22 @@
+# In[4]
+for i in layers:
+    if i.properties.hasAttachments == True:
+        # Definindo o nome do arquivo CSV diretamente com o nome da camada
+        csv_file_name = "{}_attachments.csv".format(re.sub(r'[^A-Za-z0-9]+', '', i.properties.name))
+        path = os.path.join(save_path, csv_file_name)
+        
+        csv_fields = ['Parent objectId', 'Attachment path']
+        with open(path, 'w', newline='') as csvfile:
+            csvwriter = csv.writer(csvfile)
+            csvwriter.writerow(csv_fields)
+            
+            feature_object_ids = i.query(where="1=1", return_ids_only=True, order_by_fields='objectid ASC')
+            for j in range(len(feature_object_ids['objectIds'])):
+                current_oid = feature_object_ids['objectIds'][j]
+                current_oid_attachments = i.attachments.get_list(oid=current_oid)
+            
+                if len(current_oid_attachments) > 0:
+                    for k in range(len(current_oid_attachments)):
+                        attachment_id = current_oid_attachments[k]['id']
+                        current_attachment_path = i.attachments.download(oid=current_oid, attachment_id=attachment_id, save_path=save_path)
+                        csvwriter.writerow([current_oid, os.path.join(save_path, os.path.split(current_attachment_path[0])[1])])
