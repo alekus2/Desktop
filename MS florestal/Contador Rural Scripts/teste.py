@@ -29,15 +29,8 @@ layers = rel_fs.layers + rel_fs.tables
 
 for i in layers:
     if i.properties.hasAttachments == True:
-        feature_layer_folder = os.path.join(save_path, '{}_attachments'.format(re.sub(r'[^A-Za-z0-9]+', '', i.properties.name)))
-        os.mkdir(feature_layer_folder)
-        current_date = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-        if bool(store_csv_w_attachments):
-            csv_filename = f"{i.properties.name}_attachments_{current_date}.csv"
-            path = os.path.join(feature_layer_folder, csv_filename)
-        elif not bool(store_csv_w_attachments):
-            csv_filename = f"{i.properties.name}_attachments_{current_date}.csv"
-            path = os.path.join(save_path, csv_filename)
+        csv_file_name = "{}_attachments.csv".format(re.sub(r'[^A-Za-z0-9]+', '', i.properties.name))
+        path = os.path.join(save_path, csv_file_name)
         csv_fields = ['Parent objectId', 'Attachment path']
         with open(path, 'w', newline='') as csvfile:
             csvwriter = csv.writer(csvfile)
@@ -49,10 +42,5 @@ for i in layers:
                 if len(current_oid_attachments) > 0:
                     for k in range(len(current_oid_attachments)):
                         attachment_id = current_oid_attachments[k]['id']
-                        attachment_filename = f"{current_oid}_attachment_{attachment_id}_{current_date}.jpg" 
-                        current_attachment_path = i.attachments.download(
-                            oid=current_oid,
-                            attachment_id=attachment_id,
-                            save_path=os.path.join(feature_layer_folder, attachment_filename)
-                        )
-                        csvwriter.writerow([current_oid, os.path.join(feature_layer_folder, attachment_filename)])
+                        current_attachment_path = i.attachments.download(oid=current_oid, attachment_id=attachment_id, save_path=save_path)
+                        csvwriter.writerow([current_oid, os.path.join(save_path, os.path.split(current_attachment_path[0])[1])])
