@@ -1,1 +1,11 @@
-No arcgis pro, preciso criar uma função para excluir pontos a partir de uma coluna específica da tabela de atributos.... exemplo "todas as linhas de pontos que chamam "0" na coluna "excluir" deverão ser apagadas
+
+import arcpy
+
+# Defina o caminho para sua feature class
+feature_class = r"C:\caminho\para\sua\feature_class.shp"  # Altere para o seu caminho
+
+# Use um cursor de atualização para excluir as linhas
+with arcpy.da.UpdateCursor(feature_class, ["excluir"]) as cursor:
+    for row in cursor:
+        if row[0] == 0:  # Verifica se a coluna "excluir" é igual a 0
+            cursor.deleteRow()  # Exclui a linha
