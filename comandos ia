@@ -1,11 +1,10 @@
-
 import arcpy
 
 # Defina o caminho para sua feature class
-feature_class = r"C:\caminho\para\sua\feature_class.shp"  # Altere para o seu caminho
+feature_class = r"F:\Qualidade_Florestal\02- MATO GROSSO DO SUL\11- Administrativo Qualidade MS\00- Colaboradores\17 - Alex Vinicius\Teste - gerador parcelas\Teste_gerador_parcelas_131224.shp"  # Altere para o seu caminho
 
 # Use um cursor de atualização para excluir as linhas
-with arcpy.da.UpdateCursor(feature_class, ["excluir"]) as cursor:
+with arcpy.da.UpdateCursor(feature_class, ["EXCLUIR"]) as cursor:
     for row in cursor:
         if row[0] == 0:  # Verifica se a coluna "excluir" é igual a 0
             cursor.deleteRow()  # Exclui a linha
