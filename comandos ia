@@ -1,1 +1,29 @@
-No arcgis pro, preciso criar uma função para excluir pontos a partir de uma coluna específica da tabela de atributos.... exemplo "todas as linhas de pontos que chamam "0" na coluna "excluir" deverão ser apagadas
+import arcpy
+
+# Defina o caminho da camada ou o nome da camada no projeto
+camada = "Nome_da_sua_camada"  # Substitua pelo nome da sua camada
+
+# Nome da coluna que contém o valor "excluir"
+coluna_excluir = "excluir"
+
+# Valor que indica os pontos a serem excluídos
+valor_excluir = "0"  # Altere conforme necessário
+
+# Abra um cursor de busca para encontrar os IDs das feições a serem excluídas
+with arcpy.da.SearchCursor(camada, ["OID@", coluna_excluir]) as cursor:
+    ids_para_excluir = [row[0] for row in cursor if row[1] == valor_excluir]
+
+# Verifique se há IDs para excluir
+if ids_para_excluir:
+    # Crie uma expressão de SQL para excluir os pontos
+    sql_query = f"OBJECTID IN ({', '.join(map(str, ids_para_excluir))})"
+    
+    # Exclua os pontos que atendem à condição
+    with arcpy.da.UpdateCursor(camada, ["OID@"]) as update_cursor:
+        for row in update_cursor:
+            if row[0] in ids_para_excluir:
+                update_cursor.deleteRow()
+
+    arcpy.AddMessage(f"{len(ids_para_excluir)} pontos excluídos com sucesso.")
+else:
+    arcpy.AddMessage("Nenhum ponto encontrado para excluir.")
